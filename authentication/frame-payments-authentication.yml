@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/getting-started/install
+docs: https://docs.framepayments.com/getting-started/install
+summary:
+  types: [apiKey]
+  scheme: bearer
+  transport: HTTPS only
+  api_key_in: [header]
+  oauth2_flows: []
+schemes:
+  - name: SecretKey
+    type: http
+    scheme: bearer
+    location: Authorization header
+    format: 'Authorization: Bearer <secret_key>'
+    key_prefixes:
+      sandbox: sk_sandbox_
+      production: sk_production_
+    usage: Server-side. Authenticates all REST API calls. Keep out of source control, browser code, and mobile binaries.
+  - name: PublishableKey
+    type: apiKey
+    in: client
+    location: Frame.js initialization
+    key_prefixes:
+      sandbox: pk_sandbox_
+      production: pk_production_
+    usage: Client-side only. Used to initialize Frame.js for card tokenization and elements; never the secret key.
+environments:
+  toggle: Switch environments in the Frame Dashboard at any time; test and production keys are separate.
+webhook_auth:
+  scheme: HMAC-SHA256
+  header: X-Frame-Signature
+  format: 'sha256=<hex>'
+  secret: Per-endpoint 32-character secret generated at endpoint creation; rotate via rotateWebhookEndpointSecret.
+notes: >-
+  Frame uses API-key (bearer secret key) authentication, not OAuth2 or OpenID
+  Connect, so there is no OAuth scope surface. Publishable keys are the
+  client-side half used by Frame.js; secret keys authenticate the REST API.
