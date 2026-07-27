@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: searched
+source: https://github.com/Frame-Payments/frame-cli/blob/main/skills/frame-cli/SKILL.md
+notes: >-
+  Frame publishes a machine-readable Agent Skill for its sandbox CLI, installable
+  via `npx skills add Frame-Payments/frame-cli` and browsable at
+  skills.sh/Frame-Payments/frame-cli. Saved verbatim below. Frame does not
+  publish an OpenAPI spec, so no per-operation skills were generated.
+skills:
+  - file: frame-payments-frame-cli.md
+    name: frame-cli
+    description: Drive the Frame sandbox CLI to test webhook integrations and debug server-side logic without touching live mode.
+    api: https://api.framepayments.com/v1
+    source: https://github.com/Frame-Payments/frame-cli/blob/main/skills/frame-cli/SKILL.md
+    method: searched
+    commands: [frame login, frame logout, frame whoami, frame listen, frame events resend, frame open]

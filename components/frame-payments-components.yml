@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js
+loader:
+  name: Frame.js
+  transport: CDN script tag
+  docs: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js
+  init: Initialize with a publishable key; switch between sandbox and production environments.
+  rendering: Elements render as iframes for PCI scope minimization.
+families:
+  - family: Card collection
+    components:
+      - name: Card
+        element: frame-js Card element
+        description: The card-collection element. Collects payment details; can be extended in-place to also capture a billing address (Mapbox-powered autocomplete) and identity fields (name, email, phone).
+        docs: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js/card
+  - family: Wallet payments
+    components:
+      - name: Payment Request Button
+        element: frame-js PaymentRequestButton element
+        description: Apple Pay / Google Pay button. Detects which wallet the device supports and surfaces the right one.
+        docs: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js/payment-request-button
+  - family: Onboarding
+    components:
+      - name: Embedded Onboarding
+        element: <frame-onboarding> custom element
+        description: Hosts Frame's merchant onboarding flow, bootstrapped from a client_secret.
+        docs: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js/embedded-onboarding
+  - family: Legal
+    components:
+      - name: Terms of Service
+        element: frame-js Terms of Service component
+        description: Renders a short legal preamble with links to Frame's Privacy Policy, Terms of Service, and Platform Agreement, plus an optional accept button.
+        docs: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js/terms-of-service
+platform_plugins:
+  - name: Shopify plugin
+    source: https://framepayments.com/
+  - name: WooCommerce
+    repository: https://github.com/Frame-Payments/frame-woocommerce

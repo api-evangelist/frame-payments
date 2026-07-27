@@ -1,0 +1,30 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: API-key (bearer secret key) auth; no OAuth2 flows.
+  - id: oidc
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use standard HTTP status codes, not application/problem+json.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No documented Sunset/Deprecation header support.
+  - id: idempotency-key-header
+    conforms: false
+    evidence: Frame V1 does not accept an Idempotency-Key header; billing metering events dedupe via a `reference` key.
+  - id: pagination
+    conforms: true
+    evidence: Uniform page + per_page page-based pagination with meta/has_more/next across all list endpoints.
+  - id: webhook-signatures
+    conforms: true
+    evidence: Per-endpoint HMAC-SHA256 signatures via X-Frame-Signature header.
+  - id: 3d-secure
+    conforms: true
+    evidence: 3DS2 authentication supported via frame-js Card element; documented 3DS test cards and outcomes.
+  - id: pci-dss
+    conforms: true
+    evidence: frame-js elements render as iframes for PCI scope minimization; production card data must flow through frame-js, never the raw API.

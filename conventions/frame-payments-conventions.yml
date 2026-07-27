@@ -1,0 +1,71 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/concepts/platform-behavior/
+docs:
+  - https://docs.framepayments.com/concepts/platform-behavior/idempotency
+  - https://docs.framepayments.com/concepts/platform-behavior/pagination
+  - https://docs.framepayments.com/concepts/platform-behavior/metadata
+  - https://docs.framepayments.com/api-reference/integrations/rate-limits
+base_url: https://api.framepayments.com/v1
+authentication:
+  style: bearer secret key
+  header: 'Authorization: Bearer <secret_key>'
+  see: authentication/frame-payments-authentication.yml
+idempotency:
+  header_based: false
+  note: >-
+    Frame V1 does NOT accept an Idempotency-Key HTTP header. Safe retries depend
+    on per-surface patterns documented by Frame. A header-based key is a
+    candidate for V2.
+  surfaces:
+    - surface: Billing metering events
+      operation: POST /v1/billing/metering_events
+      mechanism: The `reference` field is a globally-unique dedup key with a server-side uniqueness constraint. A repeated `reference` returns a `duplicate_reference` signal instead of logging twice.
+      guarantee: server-enforced
+    - surface: Transfers and charges
+      operation: POST /v1/transfers
+      mechanism: Query-before-retry. No client-supplied key; query GET /v1/charges for a recent match before retrying after a timeout. Optionally stamp a UUID in `metadata` and look it up.
+      guarantee: client-side pattern
+    - surface: Webhook handlers
+      mechanism: Dedupe on the stable event `id` (deliveries retry up to 3 times).
+      guarantee: client-side pattern
+pagination:
+  style: page-based
+  params: [page, per_page]
+  response_fields: [meta, has_more, next]
+  note: List endpoints use page + per_page; the response carries a meta object with has_more / next.
+  docs: https://docs.framepayments.com/api-reference/integrations/pagination
+metadata:
+  supported: true
+  shape: discrete key/value pairs (record-based, not JSON blob)
+  limits:
+    max_entries: 20
+    max_key_chars: 40
+    max_value_chars: 100
+  docs: https://docs.framepayments.com/concepts/platform-behavior/metadata
+amounts:
+  representation: integer in the smallest currency unit
+  currency: three-letter ISO code, case-insensitive
+  docs: https://docs.framepayments.com/api-reference/integrations/currencies
+versioning:
+  scheme: uri-path
+  current: v1
+  deprecated_surfaces: [POST /v1/charge_intents]
+  see: lifecycle/frame-payments-lifecycle.yml
+error_envelope:
+  http_errors: Standard HTTP status codes (400, 401, 429, ...).
+  payment_failures:
+    charge_field: failure_code
+    charge_message_field: failure_message
+    transfer_field: failure_reason
+    see: errors/frame-payments-decline-codes.yml
+rate_limit_signaling:
+  window: 60-second rolling window scoped by (merchant, endpoint, mode)
+  over_limit_status: 429
+  defaults: {live: 160, sandbox: 50}
+  see: rate-limits (docs https://docs.framepayments.com/api-reference/integrations/rate-limits)
+webhooks:
+  signature_header: X-Frame-Signature
+  signature_scheme: HMAC-SHA256
+  retries: 3
+  see: asyncapi/frame-payments-webhooks.yml

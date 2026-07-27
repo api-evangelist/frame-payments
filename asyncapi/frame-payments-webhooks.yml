@@ -1,0 +1,52 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/concepts/platform-behavior/events-and-webhooks
+type: Webhooks
+docs:
+  - https://docs.framepayments.com/concepts/platform-behavior/events-and-webhooks
+  - https://docs.framepayments.com/api-reference/integrations/webhooks
+notes: >-
+  Frame documents a webhook event surface but publishes no AsyncAPI document.
+  This file captures the webhook catalog and delivery contract. Endpoint
+  management is fully API-driven (POST/PATCH/DELETE /v1/webhook_endpoints +
+  rotate_secret).
+delivery:
+  transport: HTTPS POST
+  content_type: application/json
+  signature_header: X-Frame-Signature
+  signature_format: 'sha256=<hex>'
+  signature_algorithm: HMAC-SHA256(endpoint.secret_key, raw_payload_json)
+  secret: Per-endpoint 32-character secret; rotate via rotateWebhookEndpointSecret.
+  retries: 3
+  retry_backoff: Sidekiq default exponential backoff
+  failure_definition: non-2xx response or timeout
+  dedupe: Dedupe handler-side on the stable event `id`.
+payload_shape:
+  fields: [id, type, created, data]
+  data: Snapshot of the affected resource at fire time (matches the resource GET response), including metadata.
+endpoint_management_operations:
+  - listWebhookEndpoints
+  - getWebhookEndpoint
+  - createWebhookEndpoint
+  - updateWebhookEndpoint
+  - deleteWebhookEndpoint
+  - rotateWebhookEndpointSecret
+event_codes:
+  shape: <resource>.<action>
+  registry: Webhook::EventCodes::EVENT_CODES (server-side allowlist)
+  examples:
+    - transfer.succeeded
+    - transfer.failed
+    - charge.failed
+    - charge.refunded
+    - charge.dispute.created
+    - charge.dispute.updated
+    - customer.subscription.activated
+    - subscription.activated
+    - invoice.created
+    - invoice.issued
+    - invoice.paid
+    - invoice.overdue
+    - billing.invoice.generated
+    - billing.subscriber_overage
+    - frame.account.prefill.completed

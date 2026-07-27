@@ -1,0 +1,27 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.framepayments.com/v1
+  docs: https://docs.framepayments.com/api-reference/overview
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No formal RFC 8594 Sunset/Deprecation-header policy published. Individual
+    surfaces are marked deprecated in the docs; the canonical charge-creation
+    path is POST /v1/transfers.
+  deprecated_operations:
+    - operation: POST /v1/charge_intents
+      superseded_by: POST /v1/transfers
+      source: https://docs.framepayments.com/guides/accepting-payments/apply-a-discount-at-checkout
+status_page: null
+sla:
+  url: null
+support:
+  help_center: https://help.framepayments.com
+  dashboard: https://app.framepayments.com
+roadmap:
+  note: Roadmap items referenced inline in docs (e.g. header-based Idempotency-Key candidate for V2; CLI npm distribution FRA-4028; live-mode CLI). No dedicated roadmap page located.

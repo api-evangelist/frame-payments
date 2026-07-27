@@ -1,8 +1,29 @@
 aid: frame-payments
 name: Frame Payments
-description: Frame Payments is a company surfaced as a portfolio company of techstars and added to the
-  API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Frame Payments is a payments and compliance platform ("operating system") for
+  high-compliance and high-risk merchants across regulated verticals including
+  travel, crypto, telemedicine, gaming, gambling, the creator economy, and AI
+  businesses. The frameOS platform unifies payments, payouts, KYC/KYB, identity
+  verification, fraud detection (Sonar), geocompliance, disputes, subscriptions,
+  and usage-based billing behind one REST API at api.framepayments.com/v1. Frame
+  ships backend SDKs (Node, PHP, Ruby), mobile SDKs (iOS, Android, React Native),
+  the Frame.js browser SDK with embeddable elements, a sandbox-only CLI, and
+  HMAC-signed webhooks. Backed by Techstars.
 url: https://raw.githubusercontent.com/api-evangelist/frame-payments/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://framerusercontent.com/images/ZuP5qavgwprrdI5GSuMK3zq6P0.jpg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -11,10 +32,33 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Payments
+- Financial Services
+- Fintech
+- KYC
+- Compliance
+- Fraud Detection
+- Billing
+- Payouts
+- Identity Verification
+apis:
+- name: Frame API
+  description: >-
+    The Frame REST API for payments, payouts, accounts, KYC/identity, disputes,
+    subscriptions, invoices, and usage-based billing. Bearer secret-key auth over
+    HTTPS; page-based pagination; HMAC-SHA256 signed webhooks.
+  humanURL: https://docs.framepayments.com/
+  baseURL: https://api.framepayments.com/v1
+  properties:
+  - type: Documentation
+    url: https://docs.framepayments.com/
+  - type: APIReference
+    url: https://docs.framepayments.com/api-reference/overview
+  - type: GettingStarted
+    url: https://docs.framepayments.com/getting-started/quickstart
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +67,60 @@ maintainers:
 common:
 - type: Website
   url: https://framepayments.com/
+- type: DeveloperPortal
+  url: https://docs.framepayments.com/
+- type: Documentation
+  url: https://docs.framepayments.com/
+- type: APIReference
+  url: https://docs.framepayments.com/api-reference/overview
+- type: GettingStarted
+  url: https://docs.framepayments.com/getting-started/quickstart
+- type: Support
+  url: https://help.framepayments.com
+- type: Pricing
+  url: https://framepayments.com/pricing
+- type: SignUp
+  url: https://app.framepayments.com
+- type: TermsOfService
+  url: https://framepayments.com/legal/terms
+- type: PrivacyPolicy
+  url: https://framepayments.com/legal/privacy
+- type: GitHubOrganization
+  url: https://github.com/Frame-Payments
+- type: LLMsTxt
+  url: llms/frame-payments-llms.txt
+- type: Packages
+  url: packages/frame-payments-packages.yml
+- type: SDKs
+  url: packages/frame-payments-packages.yml
+- type: CLI
+  url: cli/frame-payments-cli.yml
+- type: Components
+  url: components/frame-payments-components.yml
+- type: Authentication
+  url: authentication/frame-payments-authentication.yml
+- type: Conventions
+  url: conventions/frame-payments-conventions.yml
+- type: Idempotency
+  url: conventions/frame-payments-conventions.yml
+- type: Sandbox
+  url: sandbox/frame-payments-sandbox.yml
+- type: Webhooks
+  url: asyncapi/frame-payments-webhooks.yml
+- type: ErrorCatalog
+  url: errors/frame-payments-problem-types.yml
+- type: DeclineCodes
+  url: errors/frame-payments-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/frame-payments-lifecycle.yml
+- type: Conformance
+  url: conformance/frame-payments-conformance.yml
+- type: DomainSecurity
+  url: security/frame-payments-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

@@ -1,0 +1,66 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/api-reference/integrations/testing
+docs: https://docs.framepayments.com/api-reference/integrations/testing
+mode_separation:
+  key_prefixes:
+    secret: {sandbox: sk_sandbox_, production: sk_production_}
+    publishable: {sandbox: pk_sandbox_, production: pk_production_}
+  rule: Test cards are rejected under production keys; production cards rejected under test keys. Sandbox mocks the payment-gateway leg.
+  base_url: https://api.framepayments.com/v1
+  dashboard: https://app.framepayments.com
+sandbox_rate_limits:
+  requests_per_minute: 50
+  live_requests_per_minute: 160
+  over_limit_status: 429
+test_cards:
+  success:
+    - {brand: Visa, number: '4242424242424242', cvc: any 3 digits, exp: any future date}
+    - {brand: Visa (debit), number: '4000056655665556'}
+    - {brand: Mastercard, number: '5555555555554444'}
+    - {brand: Mastercard, number: '2223003122003222'}
+    - {brand: Mastercard (debit), number: '5200828282828210'}
+    - {brand: Mastercard (prepaid), number: '5105105105105100'}
+    - {brand: American Express, number: '378282246310005', cvc: any 4 digits}
+    - {brand: American Express, number: '371449635398431', cvc: any 4 digits}
+    - {brand: Discover, number: '6011111111111117'}
+    - {brand: Discover, number: '6011000990139424'}
+    - {brand: Discover (debit), number: '6011981111111113'}
+  declines:
+    - {number: '4726840306461785', failure_code: expired_card}
+    - {number: '4726840756845529', failure_code: incorrect_cvc}
+    - {number: '4726849921107855', failure_code: processing_error}
+    - {number: '4726843991344803', failure_code: incorrect_number}
+    - {number: '4726846912498186', failure_code: insufficient_funds}
+    - {number: '4726843338079575', failure_code: stolen_card}
+    - {number: '4726848138487043', failure_code: generic_decline}
+    - {number: '4726848912206759', failure_code: card_velocity_exceeded}
+  three_d_secure:
+    - {number: '4000000000003220', outcome: succeeds, description: Requires 3DS2 authentication and completes.}
+    - {number: '4111110116638870', outcome: succeeds, description: 3DS Frictionless flow, no challenge UI.}
+    - {number: '4111111738973695', outcome: declined, description: Frictionless flow, declines post-auth with card_not_enrolled.}
+    - {number: '4000008400001629', outcome: declined, description: 3DS challenge UI shows; declines after authentication.}
+ach_test_accounts:
+  - {account_number: '000123456789', routing_number: '110000000', behavior: Payment succeeds}
+  - {account_number: '000111111113', routing_number: '110000000', behavior: Fails - account closed}
+  - {account_number: '000111111116', routing_number: '110000000', behavior: Fails - account not found}
+  - {account_number: '000222222227', routing_number: '110000000', behavior: Fails - insufficient funds}
+  - {account_number: '000333333335', routing_number: '110000000', behavior: Fails - debits not authorized}
+onboarding_personas:
+  key_field: phone number selects the persona
+  ssn_note: SSNs drawn from the IRS-reserved 000-XX-XXXX range.
+  personas:
+    - {phone: '+12001001695', name: Milo Pinson, dob: '1985-03-12', ssn: '000-01-0001', kyc: approved, prefill: prefilled, creator_shield: no adverse findings}
+    - {phone: '+17742345678', name: Dana Reeves, dob: '1990-07-22', ssn: '000-02-0002', kyc: denied, prefill: failed}
+    - {phone: '+12001001696', name: Taylor Morgan, dob: '1988-11-05', ssn: '000-03-0003', kyc: pending, prefill: prefilled}
+    - {phone: '+12001001697', name: Jordan Hayes, dob: '1992-04-17', ssn: '000-04-0004', prefill: pending}
+    - {phone: '+12001001698', name: Casey Brooks, dob: '1995-08-30', ssn: '000-05-0005', prefill: failed}
+    - {phone: '+12267738525', name: Rowan Ashworth, dob: '1990-06-18', ssn: '000-06-0006', kyc: approved, prefill: 'ineligible - non-US (Canadian) number; falls through to manual entry', creator_shield: no adverse findings}
+    - {phone: '+12001001699', name: Riley Carver, dob: '1989-09-14', ssn: '000-07-0007', kyc: approved, prefill: prefilled, creator_shield: adverse findings}
+magic_otp_codes:
+  - {code: '123456', outcome: Verification succeeds}
+  - {code: '000000', outcome: Invalid code}
+  - {code: '111111', outcome: Expired code}
+tooling:
+  cli: frame listen forwards sandbox webhook events to a local URL; frame events resend re-delivers events. See cli/frame-payments-cli.yml.
+  dashboard_test_event: Dashboard "send test event" fires a synthetic webhook payload to a chosen endpoint.

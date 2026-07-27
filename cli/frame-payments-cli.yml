@@ -1,0 +1,40 @@
+generated: '2026-07-19'
+method: searched
+source: https://github.com/Frame-Payments/frame-cli
+docs: https://docs.framepayments.com/
+name: frame
+package: '@frame-payments/cli'
+repository: https://github.com/Frame-Payments/frame-cli
+scope: sandbox-only
+summary: >-
+  Sandbox-only developer CLI. Simulate payments and forward webhook events to a
+  local server against the Frame sandbox without touching live keys. Live API
+  keys are rejected at runtime; every command prints a `mode: sandbox` banner.
+install:
+  - method: homebrew
+    command: brew install Frame-Payments/tap/frame
+  - method: homebrew-tap
+    command: brew tap Frame-Payments/tap && brew install frame
+  - method: npm
+    command: npm install -g @frame-payments/cli
+    status: coming
+    notes: npm distribution tracked in FRA-4028; not yet published.
+credentials:
+  path: ~/.config/frame/credentials.json
+  mode: '0600'
+  storage: OS keychain (keytar)
+commands:
+  - name: frame login
+    description: Authenticate with your Frame sandbox API key.
+  - name: frame logout
+    description: Remove the stored Frame credential.
+  - name: frame whoami
+    description: Show the currently authenticated merchant.
+  - name: frame listen
+    description: Forward sandbox webhook events to a local URL.
+    flags: ['--forward-to <url>']
+  - name: frame events resend <evt_id>
+    description: Re-deliver a previously emitted event verbatim.
+  - name: frame open [page]
+    description: Open a dashboard page in the default browser.
+agent_skill: https://skills.sh/Frame-Payments/frame-cli/frame-cli

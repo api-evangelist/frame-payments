@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/api-reference/integrations/
+format: http-status
+notes: >-
+  Frame publishes no OpenAPI spec and does not use RFC 9457 problem+json. API
+  transport errors use standard HTTP status codes; payment failures carry a
+  normalized `failure_code` on the Charge (see
+  errors/frame-payments-decline-codes.yml). This file captures the documented
+  HTTP-level error surface.
+problems:
+  - status: 401
+    condition: Missing or invalid Authorization bearer secret key
+    remediation: "Send `Authorization: Bearer <secret_key>` over HTTPS; match key environment (sandbox vs production)."
+    source: https://docs.framepayments.com/getting-started/install
+  - status: 400
+    condition: Webhook endpoint subscribed to unknown event codes ("contains invalid codes")
+    remediation: The event_codes array is allowlist-validated against Webhook::EventCodes::EVENT_CODES; use only codes in the event catalog.
+    source: https://docs.framepayments.com/concepts/platform-behavior/events-and-webhooks
+  - status: 429
+    condition: Too Many Requests - per-merchant, per-endpoint, per-mode rate limit exceeded
+    remediation: Retry with exponential backoff plus jitter (start ~1s + random(0-500ms), double, cap ~6 retries / ~30s). Request per-merchant overrides via support.
+    source: https://docs.framepayments.com/api-reference/integrations/rate-limits
+payment_failure_envelope:
+  charge_field: failure_code
+  charge_message_field: failure_message
+  transfer_field: failure_reason
+  catalog: errors/frame-payments-decline-codes.yml

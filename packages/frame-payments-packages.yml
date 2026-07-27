@@ -1,0 +1,85 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/getting-started/choose-an-sdk
+notes: >-
+  First-party client libraries live under the GitHub org github.com/Frame-Payments.
+  Backend SDKs (Node, PHP, Ruby) and mobile SDKs (iOS, Android, React Native) are
+  official. The npm package `frame-node` is a third-party fork (repo
+  github.com/mrafiqk/frame-node) and is NOT the official Node client, so it is
+  marked official:false. The official Node SDK ships from the org repo.
+packages:
+  - language: ruby
+    registry: rubygems
+    name: frame_payments
+    url: https://rubygems.org/gems/frame_payments
+    install: gem install frame_payments
+    repository: https://github.com/Frame-Payments/frame-ruby
+    version: 0.1.3
+    official: true
+  - language: php
+    registry: packagist
+    name: framepayments/php-sdk
+    url: https://packagist.org/packages/framepayments/php-sdk
+    install: composer require framepayments/php-sdk
+    repository: https://github.com/Frame-Payments/frame-php
+    official: true
+  - language: javascript
+    registry: npm
+    name: framepayments-react-native
+    url: https://www.npmjs.com/package/framepayments-react-native
+    install: npm install framepayments-react-native
+    repository: https://github.com/Frame-Payments/frame-react-native
+    version: 4.1.0
+    official: true
+    kind: mobile-sdk
+  - language: typescript
+    registry: github
+    name: frame-node
+    url: https://github.com/Frame-Payments/frame-node
+    install: npm install github:Frame-Payments/frame-node
+    repository: https://github.com/Frame-Payments/frame-node
+    official: true
+    notes: TypeScript-first backend client. Source published on GitHub; no official npm release located.
+  - language: swift
+    registry: github
+    name: frame-ios
+    url: https://github.com/Frame-Payments/frame-ios
+    install: Swift Package Manager - https://github.com/Frame-Payments/frame-ios
+    repository: https://github.com/Frame-Payments/frame-ios
+    docs: https://frame-payments.github.io/frame-ios
+    official: true
+    kind: mobile-sdk
+  - language: kotlin
+    registry: github
+    name: frame-android
+    url: https://github.com/Frame-Payments/frame-android
+    install: Gradle - https://github.com/Frame-Payments/frame-android
+    repository: https://github.com/Frame-Payments/frame-android
+    docs: https://frame-payments.github.io/frame-android
+    official: true
+    kind: mobile-sdk
+  - language: javascript
+    registry: cdn
+    name: Frame.js
+    url: https://docs.framepayments.com/api-reference/integrations/web-sdks/frame-js
+    install: <script src="https://cdn.framepayments.com/frame.js"></script>
+    official: true
+    kind: web-sdk
+    notes: Browser SDK for card tokenization, wallet payments, embedded onboarding, and ToS capture. Loaded via CDN script tag.
+  - language: shell
+    registry: homebrew
+    name: frame
+    url: https://github.com/Frame-Payments/frame-cli
+    install: brew install Frame-Payments/tap/frame
+    repository: https://github.com/Frame-Payments/frame-cli
+    official: true
+    kind: cli
+    notes: Sandbox-only developer CLI. npm distribution (@frame-payments/cli) tracked but not yet published.
+third_party:
+  - language: javascript
+    registry: npm
+    name: frame-node
+    url: https://www.npmjs.com/package/frame-node
+    repository: https://github.com/mrafiqk/frame-node
+    official: false
+    notes: Third-party fork under a personal account; not the official Frame Node client.

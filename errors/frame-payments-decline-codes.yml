@@ -1,0 +1,76 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.framepayments.com/concepts/money-movement/decline-codes
+docs: https://docs.framepayments.com/concepts/money-movement/decline-codes
+envelope:
+  field: failure_code
+  location: Charge record (which the failed Transfer wraps)
+  message_field: failure_message
+  transfer_field: failure_reason
+  events: [transfer.failed, charge.failed]
+categories:
+  - {category: Authentication required, disposition: soft, codes: [authentication_required]}
+  - {category: Insufficient funds, disposition: soft, codes: [insufficient_funds, card_velocity_exceeded, withdrawal_count_limit_exceeded]}
+  - {category: Data error, disposition: soft, codes: [incorrect_number, incorrect_cvc, incorrect_zip, invalid_expiry_month, invalid_expiry_year, invalid_amount]}
+  - {category: Card-state error, disposition: hard, codes: [expired_card, invalid_account, restricted_card, card_not_supported, currency_not_supported, new_account_information_available]}
+  - {category: Fraud / risk signal, disposition: hard, mask_to_buyer: true, codes: [fraudulent, lost_card, stolen_card, pickup_card, merchant_blacklist, security_violation]}
+  - {category: Issuer-side unknown, disposition: soft, codes: [call_issuer, do_not_honor, generic_decline, no_action_taken, try_again_later, issuer_not_available]}
+  - {category: Processing error, disposition: soft, codes: [processing_error, reenter_transaction]}
+  - {category: Test-mode, disposition: n/a, codes: [testmode_decline]}
+masked_to_buyer:
+  note: Surface these to the customer as a generic error; do not disclose the underlying reason.
+  codes: [fraudulent, lost_card, stolen_card, pickup_card, merchant_blacklist, restricted_card]
+decline_codes:
+  - {code: account_closed, meaning: Customer's bank account has been closed, action: Customer uses a different payment method}
+  - {code: authentication_required, meaning: Transaction requires 3DS authentication, action: With frame-js the auth flow typically triggers automatically; let the customer authenticate and retry}
+  - {code: approve_with_id, meaning: Payment can't be authorized, action: Retry once; if still failing, customer contacts issuer}
+  - {code: call_issuer, meaning: Declined for an unknown reason, action: Customer contacts their card issuer}
+  - {code: card_not_enrolled, meaning: Card failed 3DS authentication enrollment, action: Customer uses a different payment method or completes 3DS challenge}
+  - {code: card_not_supported, meaning: Card doesn't support this purchase type, action: Customer contacts issuer to verify capabilities}
+  - {code: card_velocity_exceeded, meaning: Customer exceeded a velocity limit, action: Customer contacts issuer}
+  - {code: cardholder_name_mismatch, meaning: Cardholder name doesn't match the name on the account, action: Retry with corrected name}
+  - {code: currency_not_supported, meaning: Card doesn't support the specified currency, action: Customer verifies currency support with issuer}
+  - {code: debit_not_authorized, meaning: Customer notified their bank the payment was unauthorized, action: Customer must use a different payment method; do not retry}
+  - {code: do_not_honor, meaning: Declined; reason undisclosed by issuer, action: Customer contacts issuer}
+  - {code: do_not_try_again, meaning: Declined; do not retry, action: Customer must use a different payment method}
+  - {code: duplicate_transaction, meaning: Identical recent transaction detected, action: Check for an existing recent payment before retrying}
+  - {code: expired_card, meaning: Card has expired, action: Customer uses a different card}
+  - {code: fraudulent, meaning: Suspected fraud, action: Surface as generic_decline to customer; do not disclose, masked: true}
+  - {code: generic_decline, meaning: Declined for an unknown reason, action: Customer contacts issuer}
+  - {code: incorrect_number, meaning: Card number entered incorrectly, action: Retry with correct number}
+  - {code: incorrect_cvc, meaning: CVC entered incorrectly, action: Retry with correct CVC}
+  - {code: incorrect_pin, meaning: Incorrect PIN (card-reader payments only), action: Retry with correct PIN}
+  - {code: incorrect_zip, meaning: Postal code incorrect, action: Retry with correct billing postal code}
+  - {code: insufficient_funds, meaning: Card has insufficient funds, action: Customer uses alternative payment method}
+  - {code: invalid_account, meaning: Card or account invalid, action: Customer contacts issuer}
+  - {code: invalid_amount, meaning: Amount invalid or exceeds limit, action: If amount is correct, customer checks with issuer}
+  - {code: invalid_cvc, meaning: Incorrect CVC, action: Retry with correct CVC}
+  - {code: invalid_expiry_month, meaning: Invalid expiration month, action: Retry with correct expiration}
+  - {code: invalid_expiry_year, meaning: Invalid expiration year, action: Retry with correct expiration}
+  - {code: invalid_number, meaning: Incorrect card number, action: Retry with correct number}
+  - {code: invalid_pin, meaning: Incorrect PIN, action: Retry with correct PIN}
+  - {code: issuer_not_available, meaning: Card issuer unreachable, action: Retry; persistence means customer contacts issuer}
+  - {code: lost_card, meaning: Card reported lost, action: Surface as generic_decline, masked: true}
+  - {code: merchant_blacklist, meaning: Matches a value on the platform's block list, action: Surface as generic_decline, masked: true}
+  - {code: new_account_information_available, meaning: Card or account invalid; new info exists, action: Customer contacts issuer}
+  - {code: no_account, meaning: Bank account couldn't be located, action: Customer uses a different payment method}
+  - {code: no_action_taken, meaning: Declined; reason undisclosed, action: Customer contacts issuer}
+  - {code: not_permitted, meaning: Payment not permitted, action: Customer contacts issuer}
+  - {code: offline_pin_required, meaning: Card requires PIN, action: Customer retries with card inserted + PIN}
+  - {code: online_or_offline_pin_required, meaning: Card requires PIN, action: If reader supports online PIN prompt without new transaction; else retry with PIN}
+  - {code: pickup_card, meaning: Card may be reported lost/stolen, action: Customer contacts issuer; surface as generic_decline, masked: true}
+  - {code: pin_try_exceeded, meaning: PIN attempts exceeded, action: Customer uses different payment method}
+  - {code: processing_error, meaning: Error processing the card, action: Retry; if persistent, try again later}
+  - {code: reenter_transaction, meaning: Issuer couldn't process for unknown reason, action: Retry once; persistence means customer contacts issuer}
+  - {code: restricted_card, meaning: Card may be reported lost/stolen, action: Customer contacts issuer; surface as generic_decline, masked: true}
+  - {code: revocation_of_all_authorizations, meaning: Declined; reason undisclosed, action: Customer contacts issuer}
+  - {code: revocation_of_authorization, meaning: Declined; reason undisclosed, action: Customer contacts issuer}
+  - {code: security_violation, meaning: Security check failed, action: Customer contacts issuer}
+  - {code: service_not_allowed, meaning: Service type not allowed, action: Customer contacts issuer}
+  - {code: stolen_card, meaning: Card reported stolen, action: Surface as generic_decline, masked: true}
+  - {code: stop_payment_order, meaning: Stop-payment order on the account, action: Customer contacts issuer}
+  - {code: testmode_decline, meaning: Test card used outside test mode, action: Use a real card}
+  - {code: transaction_not_allowed, meaning: Transaction type not allowed, action: Customer contacts issuer}
+  - {code: try_again_later, meaning: Declined for an unknown reason; retry possible, action: Retry; persistence means customer contacts issuer}
+  - {code: unsupported_card_network, meaning: Card network not supported by the merchant's processor, action: Customer uses a different card}
+  - {code: withdrawal_count_limit_exceeded, meaning: Balance or credit limit exceeded, action: Customer uses alternative payment method}
