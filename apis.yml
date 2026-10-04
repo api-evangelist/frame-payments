@@ -49,11 +49,11 @@ modified: '2026-07-19'
 tags:
 - Company
 - Payments
-- Financial-Services
+- Financial Services
 - Fintech
 - KYC
 - Compliance
-- Fraud Detection
+- Fraud Prevention
 - Billing
 - Payouts
 - Identity Verification
@@ -68,6 +68,7 @@ tags_raw:
 - Billing
 - Payouts
 - Identity Verification
+- Financial-Services
 apis:
 - name: Frame API
   description: >-
